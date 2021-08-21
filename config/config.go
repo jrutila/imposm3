@@ -149,8 +149,11 @@ func (o *Base) updateFromConfig() error {
 
 func (o *Base) check() []error {
 	errs := []error{}
-	if o.Srid != 3857 && o.Srid != 4326 {
+	if o.Srid != 3857 && o.Srid != 4326 && o.Srid != 10100 {
 		errs = append(errs, errors.New("only -srid=3857 or -srid=4326 are supported"))
+	}
+	if o.Srid == 10100 {
+		o.Srid = 0
 	}
 	if o.MappingFile == "" {
 		errs = append(errs, errors.New("missing mapping"))

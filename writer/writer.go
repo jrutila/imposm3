@@ -65,6 +65,13 @@ func (writer *OsmElemWriter) NodesToSrid(nodes []osm.Node) {
 	if writer.srid == 4326 {
 		return
 	}
+	if writer.srid == 0 {
+		for i, nd := range nodes {
+			nodes[i].Long = nd.Long * 100000
+			nodes[i].Lat = nd.Lat * 100000
+		}
+		return
+	}
 	if writer.srid != 3857 {
 		panic("invalid srid. only 4326 and 3857 are supported")
 	}
@@ -76,6 +83,11 @@ func (writer *OsmElemWriter) NodesToSrid(nodes []osm.Node) {
 
 func (writer *OsmElemWriter) NodeToSrid(node *osm.Node) {
 	if writer.srid == 4326 {
+		return
+	}
+	if writer.srid == 0 {
+		node.Long = node.Long * 100000
+		node.Lat = node.Lat * 100000
 		return
 	}
 	if writer.srid != 3857 {
